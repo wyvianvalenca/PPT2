@@ -7,7 +7,7 @@ Projeto para explorar o módulo `socket` do Python para a disciplina de Redes de
 
 ## Como usar?
 
-Em uma máquina, execute o código em `server.py` para aguardar as conexões e gerenciar o jogo. Depois, execute o arquivo `client.py` (na mesma máquina ou em outra) para jogar!
+Em uma máquina, execute o código em `server.py` para aguardar as conexões e gerenciar o jogo. Depois, execute o arquivo `client.py` (na mesma máquina ou em outra) para jogar! São necessários dois jogadores.
 
 Observação: até o momento, todas as máquinas precisam estar na mesma rede.
 
