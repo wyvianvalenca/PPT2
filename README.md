@@ -12,7 +12,7 @@ Em uma máquina, execute o código em `server.py` para aguardar as conexões e g
 Observação: até o momento, todas as máquinas precisam estar na mesma rede.
 
 # Colaboradores:
-- wyvianvalenca
-- eumarcosmendonca
-- JGSEIXAS
-- Ycaro-sales
+- [eumarcosmendonca](https://github.com/eumarcosmendonca)
+- [JGSEIXAS](https://github.com/JGSEIXAS)
+- [wyvianvalenca](https://github.com/wyvianvalenca)
+- [Ycaro-sales](https://github.com/Ycaro-sales)
