@@ -19,6 +19,9 @@ def send(msg):
     client.send(message)
 
 send("Hello World!")
+input()
 send("Hello Everyone!")
+input()
 send("tesoura")
+input()
 send(DISCONNECT_MESSAGE)
