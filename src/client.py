@@ -1,4 +1,5 @@
 import socket
+import utils
 
 HEADER = 64
 PORT = 5050
@@ -7,21 +8,51 @@ DISCONNECT_MESSAGE = '!DISCONNECT'
 SERVER = "192.168.0.15"
 ADDR = (SERVER, PORT)
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(ADDR)
+def receive_hand(conn):
 
-def send(msg):
-    message = msg.encode(FORMAT)
-    msg_length = len(message)
-    send_length = str(msg_length).encode(FORMAT)
-    send_length += b' ' * (HEADER - len(send_length))
-    client.send(send_length)
-    client.send(message)
+    hand_str =  utils.receive_message(conn)
 
-send("Hello World!")
-input()
-send("Hello Everyone!")
-input()
-send("tesoura")
-input()
-send(DISCONNECT_MESSAGE)
+    hand_list = []
+    hand_list.append(int(hand_str[5]))
+    hand_list.append(int(hand_str[7]))
+    hand_list.append(int(hand_str[9]))
+
+    return hand_list
+
+if __name__ == "__main__":
+    r = input("Wellcome to PPT2! \nPress <enter> to play or q to quit!").strip().lower()
+    if r == 'q':
+        print("\nGoodbye!")
+
+    print("\n")
+
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect(ADDR)
+
+    hand = receive_hand(client)
+
+    for i in range(3):
+        print("\n" + "-" * 20 + f" RODADA {i + 1} " + "-" * 20)
+        utils.exibir_mao(hand)
+
+        print("\n")
+        card = 0
+        for i in range(2):
+            status = utils.receive_message(client)
+            if status == "WAITING OTHER PLAYER'S CARD":
+                print("Aguardando o outro jogador...")
+            elif status == "SEND CARD":
+                card = utils.escolher_carta("Jogador", hand)
+                utils.send_message(client, str(card))
+
+        print("\n")
+        print(utils.receive_message(client))
+        print(f"Você jogou {utils.traduzir(card)}")
+        print(utils.receive_message(client))
+
+        input("\nPressione <enter> para continuar.")
+
+    print(utils.receive_message(client))
+    print(utils.receive_message(client))
+    print(utils.receive_message(client))
+

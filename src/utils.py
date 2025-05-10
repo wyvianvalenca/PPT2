@@ -2,6 +2,29 @@ import random
 from enum import Enum
 from collections import Counter
 
+HEADER = 64
+FORMAT = 'utf-8'
+
+def send_message(conn, message):
+    message = message.encode(FORMAT)
+    msg_length = len(message)
+    
+    send_length = str(msg_length).encode(FORMAT)
+    send_length += b' ' * (HEADER - len(send_length))
+
+    conn.send(send_length)
+    conn.send(message)
+
+def receive_message(conn):
+    msg_length = conn.recv(HEADER).decode(FORMAT)
+
+    if msg_length:
+        msg_length = int(msg_length)
+        msg = conn.recv(msg_length).decode(FORMAT)
+        return msg
+
+    return None
+
 class Carta(Enum):
     PEDRA = "Pedra"
     PAPEL = "Papel"
@@ -103,5 +126,5 @@ def executar_jogo():
 
     exibir_resultado_final(placar)
 
-if __name__ == "__main__":
-    executar_jogo()
+# if __name__ == "__main__":
+#     executar_jogo()
