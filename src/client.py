@@ -36,8 +36,8 @@ if __name__ == "__main__":
     hand = receive_hand(client)
 
     for i in range(3):
-        print("\n" + "-" * 20 + f" RODADA {i + 1} " + "-" * 20)
-        utils.exibir_mao(hand)
+        print("\n" + "-" * 20 + f" RODADA {i + 1} " + "-" * 20 + "\n")
+        utils.exibir_mao_estilo_rpg(hand)
 
         print("\n")
         card = 0
@@ -56,6 +56,7 @@ if __name__ == "__main__":
 
         input("\nPressione <enter> para continuar.")
 
+    print("\n")
     print(utils.receive_message(client))
     print(utils.receive_message(client))
     print(utils.receive_message(client))

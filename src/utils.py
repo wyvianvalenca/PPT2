@@ -1,6 +1,7 @@
 import random
 from enum import Enum
 from collections import Counter
+from collections import defaultdict
 
 HEADER = 64
 FORMAT = 'utf-8'
@@ -32,11 +33,11 @@ class Carta(Enum):
 
 def traduzir(carta_numero):
     if 1 <= carta_numero <= 3:
-        return Carta.PEDRA.name
+        return Carta.PEDRA
     elif 4 <= carta_numero <= 6:
-        return Carta.PAPEL.name
+        return Carta.PAPEL
     elif 7 <= carta_numero <= 9:
-        return Carta.TESOURA.name
+        return Carta.TESOURA
 
 def decidir_vencedor(carta1, carta2):
     if carta1 == carta2:
@@ -61,7 +62,25 @@ def exibir_mao(mao):
     for carta in Carta:
         print(f"{carta.value}: {contagem.get(carta, 0)} carta(s)")
     for carta in sorted(mao):
-        print(f" - {carta}: {traduzir(carta).value}")
+        print(f" - {carta}: {traduzir(carta)}")
+
+def exibir_mao_estilo_rpg(mao):
+    agrupadas = defaultdict(list)
+    for carta in mao:
+        tipo = traduzir(carta)
+        agrupadas[tipo].append(carta)
+
+    print("=" * 22)
+    print("      Sua Mão")
+    print("=" * 22)
+    for tipo in Carta:
+        cartas = sorted(agrupadas.get(tipo, []))
+        if cartas:
+            numeros = ", ".join(str(c) for c in cartas)
+        else:
+            numeros = "-"
+        print(f"{tipo.value:<8}: {numeros}")
+    print("=" * 22)
 
 def escolher_carta(jogador, mao):
     while True:
@@ -125,6 +144,3 @@ def executar_jogo():
             placar["Jogador 2"] += 1
 
     exibir_resultado_final(placar)
-
-# if __name__ == "__main__":
-#     executar_jogo()
