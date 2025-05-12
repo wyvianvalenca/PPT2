@@ -32,11 +32,11 @@ class Carta(Enum):
 
 def traduzir(carta_numero):
     if 1 <= carta_numero <= 3:
-        return Carta.PEDRA
+        return Carta.PEDRA.name
     elif 4 <= carta_numero <= 6:
-        return Carta.PAPEL
+        return Carta.PAPEL.name
     elif 7 <= carta_numero <= 9:
-        return Carta.TESOURA
+        return Carta.TESOURA.name
 
 def decidir_vencedor(carta1, carta2):
     if carta1 == carta2:

@@ -5,7 +5,7 @@ HEADER = 64
 PORT = 5050
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = '!DISCONNECT'
-SERVER = "192.168.0.15"
+SERVER = "127.0.1.1"
 ADDR = (SERVER, PORT)
 
 def receive_hand(conn):
@@ -26,8 +26,12 @@ if __name__ == "__main__":
 
     print("\n")
 
+    server_ip = input("\nPor favor, digite o endereço IP do servidor: ")
+    ADDR = (server_ip, PORT)
+
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect(ADDR)
+    print("Você está conectado! Aguarde o próximo jogador...")
 
     hand = receive_hand(client)
 
