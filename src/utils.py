@@ -1,21 +1,24 @@
 import random
 from enum import Enum
 from collections import Counter
+import socket
 
 HEADER = 64
-FORMAT = 'utf-8'
+FORMAT = "utf-8"
 
-def send_message(conn, message):
-    message = message.encode(FORMAT)
-    msg_length = len(message)
-    
+
+def send_message(conn: socket.socket, message: str):
+    encoded_msg = message.encode(FORMAT)
+    msg_length = len(encoded_msg)
+
     send_length = str(msg_length).encode(FORMAT)
-    send_length += b' ' * (HEADER - len(send_length))
+    send_length += b" " * (HEADER - len(send_length))
 
     conn.send(send_length)
-    conn.send(message)
+    conn.send(encoded_msg)
 
-def receive_message(conn):
+
+def receive_message(conn: socket.socket):
     msg_length = conn.recv(HEADER).decode(FORMAT)
 
     if msg_length:
@@ -25,10 +28,12 @@ def receive_message(conn):
 
     return None
 
+
 class Carta(Enum):
     PEDRA = "Pedra"
     PAPEL = "Papel"
     TESOURA = "Tesoura"
+
 
 def traduzir(carta_numero):
     if 1 <= carta_numero <= 3:
@@ -38,23 +43,29 @@ def traduzir(carta_numero):
     elif 7 <= carta_numero <= 9:
         return Carta.TESOURA
 
+
 def decidir_vencedor(carta1, carta2):
     if carta1 == carta2:
         return 0
-    elif (carta1 == Carta.PEDRA and carta2 == Carta.TESOURA) or \
-         (carta1 == Carta.PAPEL and carta2 == Carta.PEDRA) or \
-         (carta1 == Carta.TESOURA and carta2 == Carta.PAPEL):
+    elif (
+        (carta1 == Carta.PEDRA and carta2 == Carta.TESOURA)
+        or (carta1 == Carta.PAPEL and carta2 == Carta.PEDRA)
+        or (carta1 == Carta.TESOURA and carta2 == Carta.PAPEL)
+    ):
         return 1
     else:
         return 2
+
 
 def criar_baralho():
     baralho = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     random.shuffle(baralho)
     return baralho
 
+
 def distribuir_cartas(baralho):
     return baralho[:3], baralho[3:6]
+
 
 def exibir_mao(mao):
     contagem = Counter([traduzir(c) for c in mao])
@@ -62,6 +73,7 @@ def exibir_mao(mao):
         print(f"{carta.value}: {contagem.get(carta, 0)} carta(s)")
     for carta in sorted(mao):
         print(f" - {carta}: {traduzir(carta).value}")
+
 
 def escolher_carta(jogador, mao):
     while True:
@@ -74,6 +86,7 @@ def escolher_carta(jogador, mao):
                 print("Carta inválida! Escolha uma carta da sua mão.")
         except ValueError:
             print("Digite um número válido!")
+
 
 def jogar_rodada(jogador_um, jogador_dois):
     print("Cartas do Jogador 1:")
@@ -94,6 +107,7 @@ def jogar_rodada(jogador_um, jogador_dois):
 
     return decidir_vencedor(tipo_um, tipo_dois)
 
+
 def exibir_resultado_final(placar):
     print("\n==== Resultado Final ====")
     print(f"Jogador 1 venceu {placar['Jogador 1']} rodada(s)")
@@ -105,6 +119,7 @@ def exibir_resultado_final(placar):
         print("Jogador 2 é o vencedor!")
     else:
         print("Empate geral!")
+
 
 def executar_jogo():
     baralho = criar_baralho()
@@ -125,6 +140,7 @@ def executar_jogo():
             placar["Jogador 2"] += 1
 
     exibir_resultado_final(placar)
+
 
 # if __name__ == "__main__":
 #     executar_jogo()

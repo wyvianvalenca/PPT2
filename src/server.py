@@ -2,40 +2,26 @@ import threading
 import socket
 import sys
 import utils
+from typing import Tuple, List
 
 ## podiam ser flags
 HEADER = 64
 PORT = 5050
 SERVER = socket.gethostbyname(socket.gethostname())
 ADDR = (SERVER, PORT)
-FORMAT = 'utf-8'
-DISCONNECT_MESSAGE = '!DISCONNECT'
+FORMAT = "utf-8"
+DISCONNECT_MESSAGE = "!DISCONNECT"
 
-clients = []
+clients: List[Tuple[socket.socket, socket._RetAddress]] = []
 clients_lock = threading.RLock()
 
 new_client_event = threading.Event()
 
-def handle_client(conn, addr):
-    print(f"\n[NEW CONNECTION] {addr} connected.")
-
-    connected = True
-    while connected:
-        msg_length = conn.recv(HEADER).decode(FORMAT)
-        if msg_length:
-            msg_length = int(msg_length)
-            msg = conn.recv(msg_length).decode(FORMAT)
-            if msg == DISCONNECT_MESSAGE:
-                connected = False
-
-            print(f"[{addr}] {msg}")
-
-    conn.close()
 
 def game_loop():
-    conn1, addr1 = clients[0]
+    conn1, _ = clients[0]
     score1 = 0
-    conn2, addr2 = clients[1]
+    conn2, _ = clients[1]
     score2 = 0
 
     print("[GAME] Shuffling and distributing cards...")
@@ -144,6 +130,7 @@ def start():
 
                 print(f"[ACTIVE CONNECTIONS] {len(clients)}")
 
+
 def start_game_when_two_clients():
     while True:
         clients_lock.acquire()
@@ -152,13 +139,13 @@ def start_game_when_two_clients():
             new_client_event.clear()
             conn, addr = clients[0]
 
-            print ("[WAITING] Waiting for other player...")
+            print("[WAITING] Waiting for other player...")
 
         elif len(clients) == 2:
             new_client_event.clear()
             print("[GAME] Starting game...")
 
-            '''
+            """
             for client in clients:
                 conn, addr = client
                 thread = threading.Thread(target=handle_client, args=(conn, addr))
@@ -167,7 +154,7 @@ def start_game_when_two_clients():
 
             clients_lock.release()
             break
-            '''
+            """
 
             game_thread = threading.Thread(target=game_loop)
             game_thread.daemon = True
