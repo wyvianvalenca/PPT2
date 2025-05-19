@@ -106,10 +106,21 @@ def rematch(player1: socket.socket, player2: socket.socket):
     utils.send_message(player1, "Voce quer jogar outra partida?")
     utils.send_message(player2, "Voce quer jogar outra partida?")
 
-    utils.receive_message(player1)
-    utils.receive_message(player2)
+    p1_answer = int(utils.receive_message(player1))
+    p2_answer = int(utils.receive_message(player2))
 
-    return True
+    print(f"Jogador 1 quer revanche? {p1_answer}")
+    print(f"Jogador 2 quer revanche? {p2_answer}")
+
+    if p1_answer == 1 and p2_answer == 1:
+        utils.send_message(player1, "REMATCH")
+        utils.send_message(player2, "REMATCH")
+        return True
+
+    utils.send_message(player1, "END")
+    utils.send_message(player2, "END")
+
+    return False
 
 
 def scoreboard(player1: socket.socket, player2: socket.socket, scores: Dict):
@@ -117,7 +128,7 @@ def scoreboard(player1: socket.socket, player2: socket.socket, scores: Dict):
     for _, v in scores.items():
         partidas += v
 
-    score_str = f"[PLACAR]\nJogador 1: {scores['player 1']}\nJogador 2: {scores['player 2']}\nEmpates: {scores['draws']}\n Partidas jogadas: {partidas}"
+    score_str = f"[PLACAR]\nJogador 1: {scores['player 1']}\nJogador 2: {scores['player 2']}\nEmpates: {scores['draws']}\nPartidas jogadas: {partidas}"
     print(score_str)
     utils.send_message(player1, score_str)
     utils.send_message(player2, score_str)
@@ -203,6 +214,7 @@ def start_game_when_two_clients():
 
 try:
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 except socket.error as e:
     print(f"Error creating socket: {e}")
     sys.exit(1)

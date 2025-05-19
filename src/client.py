@@ -67,9 +67,11 @@ def handle_game():
 
 def handle_rematch():
     print(utils.receive_message(client))
-    response = int(input("1 - Sim\n2 - Não"))
+    response = input("1 - Sim\n2 - Não\n")
+    utils.send_message(client, response)
+    utils.receive_message(client)
 
-    if response == 1:
+    if response == "REMATCH":
         return True
     else:
         return False
@@ -97,7 +99,11 @@ if __name__ == "__main__":
     client.connect(ADDR)
     print("Você está conectado! Aguarde o próximo jogador...")
     playing = True
+
     while playing:
         handle_game()
         handle_scoreboard()
         playing = handle_rematch()
+
+    print("Fim do jogo")
+    print("Tchau tchau!")
