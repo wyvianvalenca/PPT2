@@ -5,9 +5,9 @@ Pedra, Papel, Tesoura 2 é uma versão inovadora do jogo clássico! Agora, ao in
 Projeto para explorar o módulo `socket` do Python para a disciplina de Redes de Computadores do curso de Ciência da Computação no Instituto de Computação da Universidade Federal de Alagoas.
 
 ## Como usar?
-Baixe o .zip e extraia os arquivos em todas as máquinas que irão participar do jogo, seja como usuário (jogador) ou servidor. 
-Na máquina que atuará como servidor, execute o código em `src/server.py` para aguardar as conexões e gerenciar o jogo. 
-Nas máquinas que atuarão como jogadores, execute o arquivo `src/client.py` para jogar. São necessários dois jogadores.
+1. Baixe o .zip e extraia os arquivos em todas as máquinas que irão participar do jogo, seja como usuário (jogador) ou servidor. 
+1. Na máquina que atuará como servidor, execute o código em `src/server.py` para aguardar as conexões e gerenciar o jogo. 
+1. Nas máquinas que atuarão como jogadores, execute o arquivo `src/client.py` para jogar. São necessários dois jogadores.
 
 ### Observações
 - Todas as máquinas precisam estar na mesma rede.
